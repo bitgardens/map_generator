@@ -48,3 +48,41 @@ export const TileSubtitle = styled.div`
     margin-left: 12px;
   }
 `;
+
+export const TileTmp = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  height: 16px;
+  width: 16px;
+
+  overflow: hidden;
+  position: relative;
+
+  img {
+    margin-right: 16px;
+  }
+`;
+
+
+export const RunBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: none;
+  background-color: #3978A8;
+  padding: 8px 24px;
+
+  font-size: 24px;
+  color: #fff;
+  border-radius: 8px;
+
+  //effects
+  transition: .2s;
+  cursor: pointer;
+  &:hover {
+    opacity: .8;
+  }
+`

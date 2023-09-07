@@ -5,14 +5,17 @@ import {
   Main,
   MapColumn,
   MapGrid,
+  RunBtn,
   Subtitle,
   TileSubtitle,
+  TileTmp,
 } from "./styles";
 import Tile from "./components/Tile";
 import { TileInterface, possibles_type } from "./components/Tile/types";
+import handle_process_map from "./handlers/processMap";
 
 const MapGenerator: React.FC = () => {
-  const SIZE = 50;
+  const SIZE = 25;
 
   const [tiles, setTiles] = useState<TileInterface[][]>(
     Array(SIZE).fill(Array(SIZE).fill({ type: "none" }))
@@ -71,7 +74,6 @@ const MapGenerator: React.FC = () => {
                   }}
                   onHover={() => {
                     if (!dragEnabled) return;
-                    console.log(`${index_j}`)
                     changeTileColor(index_i, index_j);
                   }}
                   type={type}
@@ -100,33 +102,15 @@ const MapGenerator: React.FC = () => {
             />
             <h3>Grass</h3>
           </TileSubtitle>
-          <TileSubtitle>
-            <Tile
-              onClick={() => {
-                setSelected("snow");
-              }}
-              type="snow"
-            />
-            <h3>Snow</h3>
-          </TileSubtitle>
-          <TileSubtitle>
-            <Tile
-              onClick={() => {
-                setSelected("dirt");
-              }}
-              type="dirt"
-            />
-            <h3>Dirt</h3>
-          </TileSubtitle>
-          <TileSubtitle>
-            <Tile
-              onClick={() => {
-                setSelected("sand");
-              }}
-              type="sand"
-            />
-            <h3>Sand</h3>
-          </TileSubtitle>
+
+          <RunBtn
+            onClick={() => {
+              // fuck react, wanna change this? be my guest
+              setTiles(handle_process_map(tiles));
+            }}
+          >
+            Process
+          </RunBtn>
         </Subtitle>
       </Main>
     </Container>

@@ -1,3 +1,5 @@
+import { ProcessTileType } from "../ProcessTile/types";
+
 export interface TileInterface {
   type?: possibles_type;
 }
@@ -5,6 +7,21 @@ export interface TileInterface {
 export interface TileComponentInterface extends TileInterface {
   onClick: any;
   onHover?: any;
-};
+}
 
-export type possibles_type = "none" | "grass" | "snow" | "dirt" | "sand";
+type possibles_type =
+  | "gbb"
+  | "gbl"
+  | "gblb"
+  | "gblt"
+  | "gbr"
+  | "gbrb"
+  | "gbrt"
+  | "gbt"
+  | "gb"
+  | "grass"
+  | "none"
+  | "grass"
+  | "snow"
+  | "dirt"
+  | "sand";
