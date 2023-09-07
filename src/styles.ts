@@ -65,14 +65,13 @@ export const TileTmp = styled.div`
   }
 `;
 
-
 export const RunBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   outline: none;
   border: none;
-  background-color: #3978A8;
+  background-color: #3978a8;
   padding: 8px 24px;
 
   font-size: 24px;
@@ -80,9 +79,32 @@ export const RunBtn = styled.div`
   border-radius: 8px;
 
   //effects
-  transition: .2s;
+  transition: 0.2s;
   cursor: pointer;
   &:hover {
-    opacity: .8;
+    opacity: 0.8;
   }
-`
+`;
+
+export const DownloadBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  line-height: 100%;
+  p {
+    font-size: 14px;
+    margin-top: -12px;
+  }
+
+  h3 {
+    font-size: 14px;
+  }
+
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    opacity: 0.7;
+  }
+`;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import {
   Container,
+  DownloadBtn,
   Main,
   MapColumn,
   MapGrid,
@@ -15,7 +16,7 @@ import { TileInterface, possibles_type } from "./components/Tile/types";
 import handle_process_map from "./handlers/processMap";
 
 const MapGenerator: React.FC = () => {
-  const SIZE = 25;
+  const SIZE = 35;
 
   const [tiles, setTiles] = useState<TileInterface[][]>(
     Array(SIZE).fill(Array(SIZE).fill({ type: "none" }))
@@ -54,6 +55,15 @@ const MapGenerator: React.FC = () => {
       setDragEnabled(false);
     });
   });
+
+  const handleDownload = () => {
+    var json_string = JSON.stringify(tiles, undefined, 2);
+    var link = document.createElement("a");
+    link.download = "data.json";
+    var blob = new Blob([json_string], { type: "text/plain" });
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
+  };
 
   return (
     <Container>
@@ -111,6 +121,14 @@ const MapGenerator: React.FC = () => {
           >
             Process
           </RunBtn>
+          <DownloadBtn
+            onClick={() => {
+              handleDownload();
+            }}
+          >
+            <h3>Download matriz</h3>
+            <p>process it first!</p>
+          </DownloadBtn>
         </Subtitle>
       </Main>
     </Container>
