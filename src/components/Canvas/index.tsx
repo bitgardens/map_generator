@@ -9,7 +9,8 @@ import {
   TileSubtitle,
 } from "./styles";
 import { TileColor } from "../Tile/colors";
-import { TileTypes } from "../Tile/types";
+import { TileInterface, TileTypes } from "../Tile/types";
+import { MapProcess } from "../../handlers/mapProcessor";
 
 const Canvas: React.FC = () => {
   const SIZE = 50;
@@ -21,6 +22,8 @@ const Canvas: React.FC = () => {
   const [selected, setSelected] = useState<TileTypes>("grass");
 
   const [dragEnabled, setDragEnabled] = useState(false);
+
+  const [generated, setGenerated] = useState<TileInterface[][]>();
 
   useEffect(() => {
     addEventListener("mousedown", () => {
@@ -70,12 +73,27 @@ const Canvas: React.FC = () => {
         </TileSubtitle>
       </Subtitle>
 
+      <div
+        onClick={() => {
+          const map = new MapProcess(SIZE, tiles);
+          map.run();
+        }}
+      >
+        RUN
+      </div>
+
       <Main>
         <MapGrid width={SIZE}>
           {tiles.map((value, index) => (
             <div
+              key={index}
               onClick={() => {
                 handleChangeTile(index);
+                const x_pos = index % SIZE;
+                // @ts-ignore
+                const y_pos = parseInt(index / SIZE);
+
+                console.log({ y: y_pos, x: x_pos });
               }}
               onMouseEnter={() => {
                 if (!dragEnabled) return;
@@ -84,7 +102,9 @@ const Canvas: React.FC = () => {
               style={{
                 backgroundColor: TileColor.type[value],
               }}
-            />
+            >
+              {index}
+            </div>
           ))}
         </MapGrid>
       </Main>
