@@ -1,7 +1,7 @@
-import { TileInterface, possibles_type } from "../components/Tile/types";
+import { TileInterface, TileTypes } from "../components/Tile/types";
 
 const handle_process_map = (map: TileInterface[][]): TileInterface[][] => {
-  const handle_grass_tile = (column: number, row: number): possibles_type => {
+  const handle_grass_tile = (column: number, row: number): TileTypes => {
     let left = column != 0 && map[column - 1][row].type == "none";
     let right = column != map.length - 1 && map[column + 1][row].type == "none";
     let top = row != 0 && map[column][row - 1].type == "none";

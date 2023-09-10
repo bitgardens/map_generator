@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import MapGenerator from './MapGenerator'
+import Canvas from './components/Canvas'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MapGenerator />
+    <Canvas />
   </React.StrictMode>,
 )

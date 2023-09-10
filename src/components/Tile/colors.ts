@@ -8,7 +8,9 @@ import gbrb from "../../assets/tile/gbrb.png"; // @ts-ignore
 import gbrt from "../../assets/tile/gbrt.png"; // @ts-ignore
 import gbt from "../../assets/tile/gbt.png";
 
-export const TileColor = {
+export const TileColor: {
+  type: any;
+} = {
   type: {
     none: "#3978A8",
     grass: "#71AA34",
@@ -30,12 +32,12 @@ export const tile_images = [
 ];
 
 export const tile_images_src: any = {
-  "gbb": gbb,
-  "gbl": gbl,
-  "gblb": gblb,
-  "gblt": gblt,
-  "gbr": gbr,
-  "gbrb": gbrb,
-  "gbrt": gbrt,
-  "gbt": gbt,
-}
+  gbb: gbb,
+  gbl: gbl,
+  gblb: gblb,
+  gblt: gblt,
+  gbr: gbr,
+  gbrb: gbrb,
+  gbrt: gbrt,
+  gbt: gbt,
+};

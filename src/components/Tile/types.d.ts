@@ -1,7 +1,7 @@
 import { ProcessTileType } from "../ProcessTile/types";
 
 export interface TileInterface {
-  type?: possibles_type;
+  type?: TileTypes;
 }
 
 export interface TileComponentInterface extends TileInterface {
@@ -9,7 +9,7 @@ export interface TileComponentInterface extends TileInterface {
   onHover?: any;
 }
 
-type possibles_type =
+type TileTypes =
   | "gbb"
   | "gbl"
   | "gblb"
