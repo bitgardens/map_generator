@@ -1,9 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import Canvas from './components/Canvas'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Canvas from "./components/Canvas";
+import GlobalStyles from "./globalStyles";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Canvas />
-  </React.StrictMode>,
-)
+    <GlobalStyles />
+  </React.StrictMode>
+);

@@ -27,10 +27,4 @@ export const Container = styled.div<TileInterface>`
     background-size: 24px 24px;
   `}
 
-  // effects
-  cursor: pointer;
-  transition: 0.2s;
-  &:hover {
-    opacity: 0.5;
-  }
 `;

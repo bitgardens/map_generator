@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 
+// @ts-ignore
+import logo from "../../assets/logo.png";
+
 import {
+  CTAProcessMap,
+  ClearBtn,
   Container,
+  Download,
+  GeneratedContainer,
+  LeftSide,
   Main,
   MapGeneratedColumn,
   MapGeneratedGrid,
@@ -26,7 +34,7 @@ const Canvas: React.FC = () => {
 
   const [dragEnabled, setDragEnabled] = useState(false);
 
-  const [generated, setGenerated] = useState<TileInterface[][]>();
+  const [generated, setGenerated] = useState<TileInterface[][] | null>();
 
   useEffect(() => {
     addEventListener("mousedown", () => {
@@ -44,47 +52,20 @@ const Canvas: React.FC = () => {
     setTiles(tmp);
   };
 
+  const handleDownload = () => {
+    var json_string = JSON.stringify(generated, undefined, 2);
+    var link = document.createElement("a");
+    link.download = "level.json";
+    var blob = new Blob([json_string], { type: "text/plain" });
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
+  };
+
   return (
     <Container>
       <header>
-        <img />
-        <h1>Map generator</h1>
+        <img src={logo} />
       </header>
-
-      <Subtitle>
-        <TileSubtitle>
-          <TileComponent
-            style={{
-              backgroundColor: TileColor.type.none,
-            }}
-            onClick={() => {
-              setSelected("none");
-            }}
-          />
-          <h3>Agua</h3>
-        </TileSubtitle>
-        <TileSubtitle>
-          <TileComponent
-            style={{
-              backgroundColor: TileColor.type.grass,
-            }}
-            onClick={() => {
-              setSelected("grass");
-            }}
-          />
-          <h3>Grama</h3>
-        </TileSubtitle>
-      </Subtitle>
-
-      <div
-        onClick={() => {
-          const map = new MapProcess(SIZE, tiles);
-          setGenerated(map.run());
-          console.log(map.run());
-        }}
-      >
-        RUN
-      </div>
 
       <Main>
         <MapGrid width={SIZE}>
@@ -109,25 +90,71 @@ const Canvas: React.FC = () => {
             />
           ))}
         </MapGrid>
+
+        <LeftSide>
+          <Subtitle>
+            <TileSubtitle>
+              <TileComponent
+                style={{
+                  backgroundColor: TileColor.type.none,
+                }}
+                onClick={() => {
+                  setSelected("none");
+                }}
+              />
+              <h3>Agua</h3>
+            </TileSubtitle>
+            <TileSubtitle>
+              <TileComponent
+                style={{
+                  backgroundColor: TileColor.type.grass,
+                }}
+                onClick={() => {
+                  setSelected("grass");
+                }}
+              />
+              <h3>Grama</h3>
+            </TileSubtitle>
+          </Subtitle>
+
+          {!!generated && (
+            <GeneratedContainer>
+              <MapGeneratedGrid>
+                {generated?.map((i, index_i) => (
+                  <MapGeneratedColumn key={index_i}>
+                    {i.map(({ type }, index_j) => (
+                      <Tile
+                        key={index_j}
+                        onClick={() => {}}
+                        onHover={() => {}}
+                        type={type}
+                      />
+                    ))}
+                  </MapGeneratedColumn>
+                ))}
+              </MapGeneratedGrid>
+            </GeneratedContainer>
+          )}
+
+          {!!generated && (
+            <ClearBtn onClick={() => {
+              setGenerated(null);
+            }}>
+              Clear <span>{"(will improve performance)"}</span>
+            </ClearBtn>
+          )}
+
+          <CTAProcessMap
+            onClick={() => {
+              setGenerated(new MapProcess(SIZE, tiles).run());
+            }}
+          >
+            Process Map
+          </CTAProcessMap>
+
+          {!!generated && <Download onClick={handleDownload}>Download</Download>}
+        </LeftSide>
       </Main>
-
-
-      {!!generated && (
-        <MapGeneratedGrid>
-          {generated?.map((i, index_i) => (
-            <MapGeneratedColumn key={index_i}>
-              {i.map(({ type }, index_j) => (
-                <Tile
-                  key={index_j}
-                  onClick={() => {}}
-                  onHover={() => {}}
-                  type={type}
-                />
-              ))}
-            </MapGeneratedColumn>
-          ))}
-        </MapGeneratedGrid>
-      )}
     </Container>
   );
 };
