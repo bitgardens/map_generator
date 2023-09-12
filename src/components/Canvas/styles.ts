@@ -139,3 +139,19 @@ export const DownloadBtn = styled.div`
     opacity: 0.7;
   }
 `;
+
+
+export const MapGeneratedGrid = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: scale(0.4);
+`
+
+export const MapGeneratedColumn = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+`

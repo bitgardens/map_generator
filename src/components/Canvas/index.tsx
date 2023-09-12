@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import {
   Container,
   Main,
+  MapGeneratedColumn,
+  MapGeneratedGrid,
   MapGrid,
   Subtitle,
   TileComponent,
@@ -11,6 +13,7 @@ import {
 import { TileColor } from "../Tile/colors";
 import { TileInterface, TileTypes } from "../Tile/types";
 import { MapProcess } from "../../handlers/mapProcessor";
+import Tile from "../Tile";
 
 const Canvas: React.FC = () => {
   const SIZE = 50;
@@ -76,7 +79,8 @@ const Canvas: React.FC = () => {
       <div
         onClick={() => {
           const map = new MapProcess(SIZE, tiles);
-          map.run();
+          setGenerated(map.run());
+          console.log(map.run());
         }}
       >
         RUN
@@ -102,12 +106,28 @@ const Canvas: React.FC = () => {
               style={{
                 backgroundColor: TileColor.type[value],
               }}
-            >
-              {index}
-            </div>
+            />
           ))}
         </MapGrid>
       </Main>
+
+
+      {!!generated && (
+        <MapGeneratedGrid>
+          {generated?.map((i, index_i) => (
+            <MapGeneratedColumn key={index_i}>
+              {i.map(({ type }, index_j) => (
+                <Tile
+                  key={index_j}
+                  onClick={() => {}}
+                  onHover={() => {}}
+                  type={type}
+                />
+              ))}
+            </MapGeneratedColumn>
+          ))}
+        </MapGeneratedGrid>
+      )}
     </Container>
   );
 };

@@ -1,4 +1,4 @@
-import { TileTypes } from "../components/Tile/types";
+import { TileInterface, TileTypes } from "../components/Tile/types";
 
 export class MapProcess {
   SIZE: number;
@@ -65,7 +65,7 @@ export class MapProcess {
     };
   }
 
-  private return_grass_type(arr_pos: number): string {
+  private return_grass_type(arr_pos: number): string | any {
     const { left, right, top, bottom } = this.get_borders(arr_pos);
 
     if (!left && !right && !top && !bottom) return "grass";
@@ -75,12 +75,17 @@ export class MapProcess {
   /**
    * RUN!
    */
-  public run() {
+  public run(): TileInterface[][] {
+    let tiles_matriz: TileInterface[][] = Array.from(Array(this.SIZE), () => {
+      return new Array(this.SIZE).fill({ type: "none" });
+    });
     for (let i = 0; i < this.tiles.length; i++) {
       if (this.tiles[i] == "grass") {
-        const a = this.return_grass_type(i);
-        console.log(a);
+        const { x, y } = this.to_cords(i);
+        tiles_matriz[x][y] = { type: this.return_grass_type(i) };
       }
     }
+
+    return tiles_matriz;
   }
 }
