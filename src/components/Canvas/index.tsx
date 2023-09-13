@@ -36,6 +36,8 @@ const Canvas: React.FC = () => {
 
   const [generated, setGenerated] = useState<TileInterface[][] | null>();
 
+  const [opened, setOpened] = useState(false);
+
   useEffect(() => {
     addEventListener("mousedown", () => {
       setDragEnabled(true);
@@ -93,24 +95,26 @@ const Canvas: React.FC = () => {
 
         <LeftSide>
           <Subtitle>
-            <TileSubtitle>
+            <TileSubtitle
+              onClick={() => {
+                setSelected("none");
+              }}
+            >
               <TileComponent
                 style={{
                   backgroundColor: TileColor.type.none,
                 }}
-                onClick={() => {
-                  setSelected("none");
-                }}
               />
               <h3>Agua</h3>
             </TileSubtitle>
-            <TileSubtitle>
+            <TileSubtitle
+              onClick={() => {
+                setSelected("grass");
+              }}
+            >
               <TileComponent
                 style={{
                   backgroundColor: TileColor.type.grass,
-                }}
-                onClick={() => {
-                  setSelected("grass");
                 }}
               />
               <h3>Grama</h3>
@@ -118,8 +122,13 @@ const Canvas: React.FC = () => {
           </Subtitle>
 
           {!!generated && (
-            <GeneratedContainer>
-              <MapGeneratedGrid>
+            <GeneratedContainer
+              opened={opened}
+              onClick={() => {
+                setOpened(!opened);
+              }}
+            >
+              <MapGeneratedGrid opened={opened}>
                 {generated?.map((i, index_i) => (
                   <MapGeneratedColumn key={index_i}>
                     {i.map(({ type }, index_j) => (
@@ -137,9 +146,11 @@ const Canvas: React.FC = () => {
           )}
 
           {!!generated && (
-            <ClearBtn onClick={() => {
-              setGenerated(null);
-            }}>
+            <ClearBtn
+              onClick={() => {
+                setGenerated(null);
+              }}
+            >
               Clear <span>{"(will improve performance)"}</span>
             </ClearBtn>
           )}
@@ -152,7 +163,9 @@ const Canvas: React.FC = () => {
             Process Map
           </CTAProcessMap>
 
-          {!!generated && <Download onClick={handleDownload}>Download</Download>}
+          {!!generated && (
+            <Download onClick={handleDownload}>Download</Download>
+          )}
         </LeftSide>
       </Main>
     </Container>

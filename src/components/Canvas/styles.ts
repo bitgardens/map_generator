@@ -103,6 +103,7 @@ export const Subtitle = styled.div`
   border-radius: 8px;
 
   margin-bottom: 16px;
+  z-index: 10;
 `;
 
 export const TileSubtitle = styled.div`
@@ -118,6 +119,13 @@ export const TileSubtitle = styled.div`
     margin-left: 12px;
     font-size: 16px;
     font-weight: 600;
+  }
+
+  // effects
+  transition: 0.2s;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
   }
 `;
 
@@ -181,17 +189,45 @@ export const DownloadBtn = styled.div`
   }
 `;
 
-export const MapGeneratedGrid = styled.div`
+export const MapGeneratedGrid = styled.div<{ opened?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
+
   transform: scale(0.3);
+
+  ${(p) =>
+    p.opened &&
+    `
+  transform: scale(1);
+`};
+
+  // effects
+  transition: 0.2s;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
-export const GeneratedContainer = styled.div`
+export const GeneratedContainer = styled.div<{ opened?: boolean }>`
   width: 100%;
   margin-top: -420px;
   margin-bottom: -400px;
+
+  ${(p) =>
+    p.opened &&
+    `
+    position: fixed;
+    top: 50%;
+  width: auto;
+
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    margin: 0px;
+    z-index: 100;
+    `}
 `;
 
 export const MapGeneratedColumn = styled.div`
