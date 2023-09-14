@@ -40,7 +40,11 @@ export const Main = styled.main`
 
 export const MapGrid = styled.div<{ width: number }>`
   display: grid;
-  grid-template-columns: repeat(${(p) => p.width}, 16px);
+  width: 760px;
+  grid-template-columns: repeat(
+    ${(p) => p.width},
+    calc(760px / ${(p) => p.width})
+  );
   align-items: center;
   justify-content: center;
 
@@ -48,8 +52,8 @@ export const MapGrid = styled.div<{ width: number }>`
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 16px;
-    width: 16px;
+    width: 100%;
+    height: calc(760px / ${(p) => p.width});
 
     // effects
     transition: 0.2s;
@@ -193,14 +197,7 @@ export const MapGeneratedGrid = styled.div<{ opened?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  transform: scale(0.3);
-
-  ${(p) =>
-    p.opened &&
-    `
-  transform: scale(1);
-`};
+  width: 100%;
 
   // effects
   transition: 0.2s;
@@ -211,7 +208,7 @@ export const MapGeneratedGrid = styled.div<{ opened?: boolean }>`
 `;
 
 export const GeneratedContainer = styled.div<{ opened?: boolean }>`
-  width: 100%;
+  width: 351px;
 
   ${(p) =>
     p.opened &&
@@ -228,11 +225,16 @@ export const GeneratedContainer = styled.div<{ opened?: boolean }>`
     `}
 `;
 
-export const MapGeneratedColumn = styled.div`
+export const MapGeneratedColumn = styled.div<{ size: number }>`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
+
+  width: calc(351px / ${(p) => p.size});
+  div {
+    height: calc(351px / ${(p) => p.size});
+  }
 `;
 
 export const CTAProcessMap = styled.div`

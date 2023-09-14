@@ -5,8 +5,8 @@ import { TileInterface } from "./types";
 import gblb from "../../assets/tile/gblb.png";
 
 export const Container = styled.div<TileInterface>`
-  height: 24px;
-  width: 24px;
+  height: 100%;
+  width: 100%;
 
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@ export const Container = styled.div<TileInterface>`
     `
     background-image: url(${tile_images_src[String(p.type)]});
     background-repeat: no-repeat;
-    background-size: 24px 24px;
+    background-size: 100% 100%;
   `}
 
 `;

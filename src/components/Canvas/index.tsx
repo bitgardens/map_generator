@@ -76,11 +76,6 @@ const Canvas: React.FC = () => {
               key={index}
               onClick={() => {
                 handleChangeTile(index);
-                const x_pos = index % SIZE;
-                // @ts-ignore
-                const y_pos = parseInt(index / SIZE);
-
-                console.log({ y: y_pos, x: x_pos });
               }}
               onMouseEnter={() => {
                 if (!dragEnabled) return;
@@ -130,7 +125,7 @@ const Canvas: React.FC = () => {
             >
               <MapGeneratedGrid opened={opened}>
                 {generated?.map((i, index_i) => (
-                  <MapGeneratedColumn key={index_i}>
+                  <MapGeneratedColumn size={SIZE} key={index_i}>
                     {i.map(({ type }, index_j) => (
                       <Tile
                         key={index_j}
