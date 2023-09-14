@@ -212,8 +212,6 @@ export const MapGeneratedGrid = styled.div<{ opened?: boolean }>`
 
 export const GeneratedContainer = styled.div<{ opened?: boolean }>`
   width: 100%;
-  margin-top: -420px;
-  margin-bottom: -400px;
 
   ${(p) =>
     p.opened &&
