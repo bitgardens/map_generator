@@ -3,10 +3,12 @@ import { TileInterface, TileTypes } from "../components/Tile/types";
 export class MapProcess {
   SIZE: number;
   tiles: TileTypes[];
+  new_tiles: TileInterface[][];
 
   constructor(SIZE: number, tiles: TileTypes[]) {
     this.SIZE = SIZE;
     this.tiles = tiles;
+    this.new_tiles = [];
   }
 
   /**
@@ -30,6 +32,90 @@ export class MapProcess {
    */
   private from_cords(x: number, y: number): number {
     return y * this.SIZE + x;
+  }
+
+  /** Check inside border */
+  private get_inside_borders(arr_pos: number): {
+    left: boolean;
+    right: boolean;
+    top: boolean;
+    bottom: boolean;
+  } {
+    const { x, y } = this.to_cords(arr_pos);
+    let left = x != 0 && this.new_tiles[x - 1][y].type?.startsWith("gb");
+    let right =
+      x != this.new_tiles.length - 1 &&
+      this.new_tiles[x + 1][y].type?.startsWith("gb");
+    let top = y != 0 && this.new_tiles[x][y - 1].type?.startsWith("gb");
+    let bottom =
+      y != this.new_tiles.length - 1 &&
+      this.new_tiles[x][y + 1].type?.startsWith("gb");
+
+    return {
+      left: left == undefined ? false : left,
+      right: right == undefined ? false : right,
+      top: top == undefined ? false : top,
+      bottom: bottom == undefined ? false : bottom,
+    };
+  }
+
+  private return_border_inside_type(arr_pos: number): string | any {
+    const { left, right, top, bottom } = this.get_inside_borders(arr_pos);
+    const { x, y } = this.to_cords(arr_pos);
+
+    // open_to_left & open_to_top
+    // grass border inside left top
+    if (left && top) {
+      const left_type = this.new_tiles[x - 1][y].type;
+      const top_type = this.new_tiles[x][y - 1].type;
+
+      if (
+        (left_type == "gbt" || left_type == "gblt") &&
+        (top_type == "gbl" || top_type == "gblt")
+      ) {
+        return "gbilt";
+      }
+    }
+
+    // open to rigth & open to top
+    if (right && top) {
+      const top_type = this.new_tiles[x][y - 1].type;
+      const right_type = this.new_tiles[x + 1][y].type;
+      if (
+        (right_type == "gbt" || right_type == "gbrt") &&
+        (top_type == "gbr" || top_type == "gbrt")
+      ) {
+        return "gbirt";
+      }
+    } // grass border inside right top
+
+    // open to left & open to bottom
+    if (left && bottom) {
+      const left_type = this.new_tiles[x - 1][y].type;
+      const bottom_type = this.new_tiles[x][y + 1].type;
+      // console.log({left_type, bottom_type});
+
+      if (
+        (left_type == "gbb" || left_type == "gblb") &&
+        (bottom_type == "gbl" || bottom_type == "gblb")
+      ) {
+        return "gbilb";
+      }
+    } // grass border inside left bottom
+
+    if (right && bottom) {
+      const right_type = this.new_tiles[x + 1][y].type;
+      const bottom_type = this.new_tiles[x][y + 1].type;
+
+      if (
+        (right_type == "gbb" || right_type == "gbrt") &&
+        (bottom_type == "gbr" || bottom_type == "gbrb")
+      ) {
+        return "gbirb";
+      }
+    } // grass border inside right bottom
+
+    return "grass";
   }
 
   /**
@@ -83,6 +169,17 @@ export class MapProcess {
       if (this.tiles[i] == "grass") {
         const { x, y } = this.to_cords(i);
         tiles_matriz[x][y] = { type: this.return_grass_type(i) };
+      }
+    }
+
+    this.new_tiles = tiles_matriz;
+
+    for (let i = 0; i < this.tiles.length; i++) {
+      const { x, y } = this.to_cords(i);
+      if (!this.new_tiles[x][y].type?.startsWith("bg")) {
+        if (this.return_border_inside_type(i) != "grass") {
+          tiles_matriz[x][y] = { type: this.return_border_inside_type(i) };
+        }
       }
     }
 

@@ -21,11 +21,36 @@ const handle_process_map = (map: TileInterface[][]): TileInterface[][] => {
     return `gb${left ? "l" : right ? "r" : ""}${top ? "t" : bottom ? "b" : ""}`;
   };
 
+  const handle_grass_inside_border = (column: number, row: number) => {
+    let left = column != 0 && map[column - 1][row].type?.startsWith("bg");
+    let right =
+      column != map.length - 1 && map[column + 1][row].type?.startsWith("bg");
+    let top = row != 0 && map[column][row - 1].type?.startsWith("bg");
+    let bottom =
+      row != map[column].length - 1 &&
+      map[column][row + 1].type?.startsWith("bg");
+
+    if (left && top) return "giblt"; // grass inside border left top
+    if (right && top) return "gibrt"; // grass inside border right top
+    if (left && bottom) return "giblb"; // grass inside border left bottom
+    if (right && bottom) return "gibrb"; // grass inside border right bottom
+  };
+
   for (let column = 0; column < map.length; column++) {
     for (let row = 0; row < map[column].length; row++) {
       let type: any = map[column][row].type;
       if (map[column][row].type == "grass") {
         type = handle_grass_tile(column, row);
+      }
+      map[column][row].type = type;
+    }
+  }
+
+  for (let column = 0; column < map.length; column++) {
+    for (let row = 0; row < map[column].length; row++) {
+      let type: any = map[column][row].type;
+      if (!map[column][row].type?.startsWith("gb")) {
+        console.log(`${handle_grass_inside_border(column, row)} - ${column}, ${row}`)
       }
       map[column][row].type = type;
     }
