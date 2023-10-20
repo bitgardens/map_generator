@@ -6,7 +6,11 @@ import gblt from "../../assets/tile/gblt.png"; // @ts-ignore
 import gbr from "../../assets/tile/gbr.png"; // @ts-ignore
 import gbrb from "../../assets/tile/gbrb.png"; // @ts-ignore
 import gbrt from "../../assets/tile/gbrt.png"; // @ts-ignore
-import gbt from "../../assets/tile/gbt.png";
+import gbt from "../../assets/tile/gbt.png";  // @ts-ignore
+import gbilb from "../../assets/tile/gbilb.png";  // @ts-ignore
+import gbilt from "../../assets/tile/gbilt.png";  // @ts-ignore
+import gbirb from "../../assets/tile/gbirb.png";  // @ts-ignore
+import gbirt from "../../assets/tile/gbirt.png";  // @ts-ignore
 
 export const TileColor: {
   type: any;
@@ -29,6 +33,10 @@ export const tile_images = [
   "gbrb",
   "gbrt",
   "gbt",
+  "gbilt",
+  "gbirt",
+  "gbilb",
+  "gbirb"
 ];
 
 export const tile_images_src: any = {
@@ -40,4 +48,8 @@ export const tile_images_src: any = {
   gbrb: gbrb,
   gbrt: gbrt,
   gbt: gbt,
+  gbilt: gbilt,
+  gbirt: gbirt,
+  gbilb: gbilb,
+  gbirb: gbirb
 };
