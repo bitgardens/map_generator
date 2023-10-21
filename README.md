@@ -19,4 +19,17 @@ A WebApp to create your custom map to BitGardens Game.
 | `gbilb`      | grass border inside left bottom | <img src='/src/assets/tile/gbilb.png' width='32'></img> |
 | `gbirb`      | grass border inside right bottom | <img src='/src/assets/tile/gbirb.png' width='32'></img> |
 
+## Dirt Roads
+| Type   | Preview 
+| :---------- | :--------- | 
+| `road1`      | <img src='/src/assets/tile/road1.png' width='32'></img>|
+| `road2`      | <img src='/src/assets/tile/road2.png' width='32'></img>|
+| `road3`      | <img src='/src/assets/tile/road3.png' width='32'></img>|
+| `road4`      | <img src='/src/assets/tile/road4.png' width='32'></img>|
+| `road5`      | <img src='/src/assets/tile/road5.png' width='32'></img>|
+| `road6`      | <img src='/src/assets/tile/road6.png' width='32'></img>|
+| `road7`      | <img src='/src/assets/tile/road7.png' width='32'></img>|
+| `road8`      | <img src='/src/assets/tile/road8.png' width='32'></img>|
+| `road9`      | <img src='/src/assets/tile/road9.png' width='32'></img>|
+| `road10`      | <img src='/src/assets/tile/road10.png' width='32'></img>|
 
