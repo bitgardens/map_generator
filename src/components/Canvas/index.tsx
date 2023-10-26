@@ -115,6 +115,18 @@ const Canvas: React.FC = () => {
               />
               <h3>Grama</h3>
             </TileSubtitle>
+            <TileSubtitle
+              onClick={() => {
+                setSelected("road");
+              }}
+            >
+              <TileComponent
+                style={{
+                  backgroundColor: TileColor.type.road,
+                }}
+              />
+              <h3>Caminho</h3>
+            </TileSubtitle>
           </Subtitle>
 
           {!!generated && (

@@ -158,6 +158,62 @@ export class MapProcess {
 
     return `gb${left ? "l" : right ? "r" : ""}${top ? "t" : bottom ? "b" : ""}`;
   }
+
+  /** Check for paths values */
+  private get_path_borders(arr_pos: number): {
+    left: boolean;
+    right: boolean;
+    top: boolean;
+    bottom: boolean;
+  } {
+    const { x, y } = this.to_cords(arr_pos);
+    let left =
+      x != 0 && this.tiles[this.from_cords(x - 1, y)].startsWith("road");
+    let right =
+      x != this.tiles.length - 1 &&
+      this.tiles[this.from_cords(x + 1, y)].startsWith("road");
+    let top =
+      y != 0 && this.tiles[this.from_cords(x, y - 1)].startsWith("road");
+    let bottom =
+      y != this.tiles.length - 1 &&
+      this.tiles[this.from_cords(x, y + 1)].startsWith("road");
+    return {
+      left: left == undefined ? false : left,
+      right: right == undefined ? false : right,
+      top: top == undefined ? false : top,
+      bottom: bottom == undefined ? false : bottom,
+    };
+  }
+
+  private return_path_type(arr_pos: number): string | any {
+    const { left, right, top, bottom } = this.get_path_borders(arr_pos);
+
+    if (top && bottom) {
+      return "road10";
+    } else if (left && right) {
+      return "road8";
+    } else if (left && bottom) {
+      return "road7";
+    } else if (right && bottom) {
+      return "road9";
+    } else if (left && top) {
+      return "road2";
+    } else if (right && top) {
+      return "road4";
+    } else if (top && !bottom) {
+      return "road1";
+    } else if (!top && bottom) {
+      return "road3";
+    } else if (!left && right) {
+      return "road6";
+    } else if (left && !right) {
+      return "road5";
+    } else {
+      console.log(`> Invalid road type at ${this.to_cords(arr_pos)}`);
+      return "grass";
+    }
+  }
+
   /**
    * RUN!
    */
@@ -165,6 +221,8 @@ export class MapProcess {
     let tiles_matriz: TileInterface[][] = Array.from(Array(this.SIZE), () => {
       return new Array(this.SIZE).fill({ type: "none" });
     });
+
+    /** Grass outside borders */
     for (let i = 0; i < this.tiles.length; i++) {
       if (this.tiles[i] == "grass") {
         const { x, y } = this.to_cords(i);
@@ -176,12 +234,25 @@ export class MapProcess {
     // const value = this.from_cords(17, 10);
     // console.log(this.return_border_inside_type(value));
 
+    /** Grass inside borders */
     for (let i = 0; i < this.tiles.length; i++) {
       const { x, y } = this.to_cords(i);
       if (!this.new_tiles[x][y].type?.startsWith("bg")) {
         if (this.return_border_inside_type(i) != "grass") {
           tiles_matriz[x][y] = { type: this.return_border_inside_type(i) };
         }
+      }
+    }
+
+    this.new_tiles = tiles_matriz;
+    // const value = this.from_cords(4, 5);
+    // console.log(this.return_border_inside_type(value));
+    // return tiles_matriz;
+    /** Paths */
+    for (let i = 0; i < this.tiles.length; i++) {
+      const { x, y } = this.to_cords(i);
+      if (this.tiles[i].startsWith("road")) {
+        tiles_matriz[x][y] = { type: this.return_path_type(i) };
       }
     }
 

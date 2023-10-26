@@ -28,4 +28,6 @@ type TileTypes =
   | "grass"
   | "snow"
   | "dirt"
-  | "sand";
+  | "sand"
+  | "road"
+  ;
