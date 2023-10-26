@@ -63,7 +63,6 @@ export class MapProcess {
     const { left, right, top, bottom } = this.get_inside_borders(arr_pos);
     const { x, y } = this.to_cords(arr_pos);
 
-    // open_to_left & open_to_top
     // grass border inside left top
     if (left && top) {
       const left_type = this.new_tiles[x - 1][y].type;
@@ -81,6 +80,7 @@ export class MapProcess {
     if (right && top) {
       const top_type = this.new_tiles[x][y - 1].type;
       const right_type = this.new_tiles[x + 1][y].type;
+
       if (
         (right_type == "gbt" || right_type == "gbrt") &&
         (top_type == "gbr" || top_type == "gbrt")
@@ -108,7 +108,7 @@ export class MapProcess {
       const bottom_type = this.new_tiles[x][y + 1].type;
 
       if (
-        (right_type == "gbb" || right_type == "gbrt") &&
+        (right_type == "gbb" || right_type == "gbrb") &&
         (bottom_type == "gbr" || bottom_type == "gbrb")
       ) {
         return "gbirb";
@@ -173,6 +173,8 @@ export class MapProcess {
     }
 
     this.new_tiles = tiles_matriz;
+    // const value = this.from_cords(17, 10);
+    // console.log(this.return_border_inside_type(value));
 
     for (let i = 0; i < this.tiles.length; i++) {
       const { x, y } = this.to_cords(i);

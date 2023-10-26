@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "./styles";
-import { TileComponentInterface, TileInterface } from "./types";
+import { TileComponentInterface } from "./types";
 
 // @ts-ignore
 import tiles1 from "../../assets/tiles1.png";

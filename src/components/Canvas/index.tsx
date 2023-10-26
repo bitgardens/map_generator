@@ -24,7 +24,8 @@ import { MapProcess } from "../../handlers/mapProcessor";
 import Tile from "../Tile";
 
 const Canvas: React.FC = () => {
-  const SIZE = 40;
+  // const SIZE = 40;
+  const SIZE = 20;
 
   const [tiles, setTiles] = useState<TileTypes[]>(
     Array(SIZE * SIZE).fill("none")
