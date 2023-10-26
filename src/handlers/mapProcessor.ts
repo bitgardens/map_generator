@@ -15,7 +15,7 @@ export class MapProcess {
    * Converts the tile array position into cartesian
    * @returns X and Y relative to that position
    */
-  private to_cords(arr_pos: number): { x: number; y: number } {
+  public to_cords(arr_pos: number): { x: number; y: number } {
     const x_pos = arr_pos % this.SIZE;
     // @ts-ignore
     const y_pos = parseInt(arr_pos / this.SIZE);

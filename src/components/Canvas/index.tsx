@@ -24,19 +24,16 @@ import { MapProcess } from "../../handlers/mapProcessor";
 import Tile from "../Tile";
 
 const Canvas: React.FC = () => {
-  // const SIZE = 40;
-  const SIZE = 20;
+  const SIZE = 40;
+  // const SIZE = 20;
 
   const [tiles, setTiles] = useState<TileTypes[]>(
     Array(SIZE * SIZE).fill("none")
   );
 
   const [selected, setSelected] = useState<TileTypes>("grass");
-
   const [dragEnabled, setDragEnabled] = useState(false);
-
   const [generated, setGenerated] = useState<TileInterface[][] | null>();
-
   const [opened, setOpened] = useState(false);
 
   useEffect(() => {
@@ -49,7 +46,35 @@ const Canvas: React.FC = () => {
     });
   }, []);
 
+  const fillHorizontal = (index: number) => {
+    const x_pos = index % SIZE;
+    const MIN_LEFT = index - x_pos;
+    const MAX_RIGHT = index + (39 - x_pos);
+
+    let left_extremity = MIN_LEFT;
+    for (let i = index; i >= MIN_LEFT; i--) {
+      if (tiles[i] == "grass") {
+        left_extremity = i;
+        break;
+      }
+    }
+
+    let tmp = [...tiles];
+
+    for (let i = left_extremity + 1; i <= MAX_RIGHT; i++) {
+      tmp[i] = "grass";
+      if (tiles[i] == "grass") break;
+    }
+
+    setTiles(tmp);
+  };
+
   const handleChangeTile = (index: number) => {
+    if (selected == "snow") {
+      fillHorizontal(index);
+
+      return;
+    }
     let tmp = [...tiles];
     tmp[index] = selected;
     setTiles(tmp);
@@ -126,6 +151,19 @@ const Canvas: React.FC = () => {
                 }}
               />
               <h3>Caminho</h3>
+            </TileSubtitle>
+
+            <TileSubtitle
+              onClick={() => {
+                setSelected("snow");
+              }}
+            >
+              <TileComponent
+                style={{
+                  backgroundColor: TileColor.type.grass,
+                }}
+              />
+              <h3>Fill-X</h3>
             </TileSubtitle>
           </Subtitle>
 
