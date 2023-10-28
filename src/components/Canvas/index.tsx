@@ -52,8 +52,11 @@ const Canvas: React.FC = () => {
     const MAX_RIGHT = index + (39 - x_pos);
 
     let left_extremity = MIN_LEFT;
+    let type: TileTypes = "grass";
     for (let i = index; i >= MIN_LEFT; i--) {
-      if (tiles[i] == "grass") {
+      if (tiles[i] != "none") {
+        console.log(tiles[i]);
+        type = tiles[i];
         left_extremity = i;
         break;
       }
@@ -62,15 +65,15 @@ const Canvas: React.FC = () => {
     let tmp = [...tiles];
 
     for (let i = left_extremity + 1; i <= MAX_RIGHT; i++) {
-      tmp[i] = "grass";
-      if (tiles[i] == "grass") break;
+      tmp[i] = type;
+      if (tiles[i] == type) break;
     }
 
     setTiles(tmp);
   };
 
   const handleChangeTile = (index: number) => {
-    if (selected == "snow") {
+    if (selected == "dirt") {
       fillHorizontal(index);
 
       return;
@@ -142,6 +145,19 @@ const Canvas: React.FC = () => {
             </TileSubtitle>
             <TileSubtitle
               onClick={() => {
+                setSelected("snow");
+              }}
+            >
+              <TileComponent
+                style={{
+                  backgroundColor: TileColor.type.snow,
+                }}
+              />
+              <h3>Neve</h3>
+            </TileSubtitle>
+
+            <TileSubtitle
+              onClick={() => {
                 setSelected("road");
               }}
             >
@@ -155,7 +171,7 @@ const Canvas: React.FC = () => {
 
             <TileSubtitle
               onClick={() => {
-                setSelected("snow");
+                setSelected("dirt");
               }}
             >
               <TileComponent

@@ -1,8 +1,6 @@
 import { styled } from "styled-components";
 import { TileColor, tile_images, tile_images_src } from "./colors";
 import { TileInterface } from "./types";
-// @ts-ignore
-import gblb from "../../assets/tile/gblb.png";
 
 export const Container = styled.div<TileInterface>`
   height: 100%;
@@ -20,11 +18,16 @@ export const Container = styled.div<TileInterface>`
       `};
 
   ${(p) =>
+    p.type == "snow" &&
+    `
+      background-color: ${TileColor.type.snow}
+      `};
+
+  ${(p) =>
     tile_images.includes(String(p.type)) &&
     `
     background-image: url(${tile_images_src[String(p.type)]});
     background-repeat: no-repeat;
     background-size: 100% 100%;
   `}
-
 `;
