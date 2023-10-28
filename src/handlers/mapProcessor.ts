@@ -36,7 +36,7 @@ export class MapProcess {
 
   /**
    * Get the borders inside ```_bi``` status
-   * @param starts_with tile type to check.
+   * @param starts_with tile type to check. ```sb|gb|road|...```
    */
   private get_inside_borders(
     arr_pos: number,
@@ -65,6 +65,46 @@ export class MapProcess {
     };
   }
 
+  /**
+   * Get the outisde borders ```_bi``` status
+   * @param starts_with tile type to check. ```sb|gb|road|...```
+   */
+  private get_outside_borders(
+    arr_pos: number,
+    starts_with: string
+  ): {
+    left: boolean;
+    right: boolean;
+    top: boolean;
+    bottom: boolean;
+  } {
+    const { x, y } = this.to_cords(arr_pos);
+
+    let left =
+      x != 0 && this.tiles[this.from_cords(x - 1, y)].startsWith(starts_with);
+    let right =
+      x != this.tiles.length - 1 &&
+      this.tiles[this.from_cords(x + 1, y)].startsWith(starts_with);
+    let top =
+      y != 0 && this.tiles[this.from_cords(x, y - 1)].startsWith(starts_with);
+    let bottom =
+      y != this.tiles.length - 1 &&
+      this.tiles[this.from_cords(x, y + 1)].startsWith(starts_with);
+
+    return {
+      left: left == undefined ? false : left,
+      right: right == undefined ? false : right,
+      top: top == undefined ? false : top,
+      bottom: bottom == undefined ? false : bottom,
+    };
+  }
+
+  /**
+   * Get the type of inside borders
+   * @param arr_pos Position in array
+   * @param tile The full name of the tile ```snow|grass|...```
+   * @param border_prefix The prefix for the returned type ```sb``` for snow ```gb``` for grass.
+   */
   private return_border_inside_type(
     arr_pos: number,
     tile: string,
@@ -138,54 +178,37 @@ export class MapProcess {
   }
 
   /**
-   * Checks the border values
+   * Get the type of outside borders
+   * @param arr_pos Position in array
+   * @param tile The full name of the tile ```snow|grass|...```
+   * @param border_prefix The prefix for the returned type ```sb``` for snow ```gb``` for grass.
    */
-  private get_borders(
+  private return_outside_border_type(
     arr_pos: number,
-    starts_with: string
-  ): {
-    left: boolean;
-    right: boolean;
-    top: boolean;
-    bottom: boolean;
-  } {
-    const { x, y } = this.to_cords(arr_pos);
-
-    let left =
-      x != 0 && this.tiles[this.from_cords(x - 1, y)].startsWith(starts_with);
-    let right =
-      x != this.tiles.length - 1 &&
-      this.tiles[this.from_cords(x + 1, y)].startsWith(starts_with);
-    let top =
-      y != 0 && this.tiles[this.from_cords(x, y - 1)].startsWith(starts_with);
-    let bottom =
-      y != this.tiles.length - 1 &&
-      this.tiles[this.from_cords(x, y + 1)].startsWith(starts_with);
-
-    return {
-      left: left == undefined ? false : left,
-      right: right == undefined ? false : right,
-      top: top == undefined ? false : top,
-      bottom: bottom == undefined ? false : bottom,
-    };
-  }
-
-  private return_border_type(
-    arr_pos: number,
-    tile_type: string,
-    prefix: string
+    tile: string,
+    border_prefix: string
   ): string | any {
-    const { left, right, top, bottom } = this.get_borders(arr_pos, "none");
+    const { left, right, top, bottom } = this.get_outside_borders(
+      arr_pos,
+      "none"
+    );
 
-    if (!left && !right && !top && !bottom) return tile_type;
+    if (!left && !right && !top && !bottom) return tile;
 
-    return `${prefix}${left ? "l" : right ? "r" : ""}${
+    return `${border_prefix}${left ? "l" : right ? "r" : ""}${
       top ? "t" : bottom ? "b" : ""
     }`;
   }
 
+  /**
+   * Get the Path|Road tile_type.
+   * @param arr_pos Position in array
+   */
   private return_path_type(arr_pos: number): string | any {
-    const { left, right, top, bottom } = this.get_borders(arr_pos, "road");
+    const { left, right, top, bottom } = this.get_outside_borders(
+      arr_pos,
+      "road"
+    );
 
     if (top && bottom) {
       return "road10";
@@ -226,10 +249,12 @@ export class MapProcess {
       const { x, y } = this.to_cords(i);
       if (this.tiles[i] == "grass") {
         tiles_matriz[x][y] = {
-          type: this.return_border_type(i, "grass", "gb"),
+          type: this.return_outside_border_type(i, "grass", "gb"),
         };
       } else if (this.tiles[i] == "snow") {
-        tiles_matriz[x][y] = { type: this.return_border_type(i, "snow", "sb") };
+        tiles_matriz[x][y] = {
+          type: this.return_outside_border_type(i, "snow", "sb"),
+        };
       }
     }
 
