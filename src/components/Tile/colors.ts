@@ -39,6 +39,13 @@ import road8 from "../../assets/tile/road8.png"; // @ts-ignore
 import road9 from "../../assets/tile/road9.png"; // @ts-ignore
 import road10 from "../../assets/tile/road10.png";
 
+/** Decorators */ //@ts-ignore
+import tree from "../../assets/decorators/tree.png"; //@ts-ignore
+import tree2 from "../../assets/decorators/tree2.png"; //@ts-ignore
+import tree3 from "../../assets/decorators/tree3.png"; //@ts-ignore
+import tree4 from "../../assets/decorators/tree4.png"; //@ts-ignore
+
+
 export const TileColor: {
   type: any;
 } = {
@@ -49,6 +56,10 @@ export const TileColor: {
     road: "#EEA160",
     dirt: "#964B00",
     sand: "#C2B280",
+    tree: "#FF0000",
+    tree2: "#FF0000",
+    tree3: "#FF0000",
+    tree4: "#FF0000",
   },
 };
 
@@ -87,6 +98,10 @@ export const tile_images = [
   "road8",
   "road9",
   "road10",
+  "tree",
+  "tree2",
+  "tree3",
+  "tree4"
 ];
 
 export const tile_images_src: any = {
@@ -124,4 +139,8 @@ export const tile_images_src: any = {
   sbirt,
   sbilb,
   sbirb,
+  tree,
+  tree2,
+  tree3,
+  tree4,
 };

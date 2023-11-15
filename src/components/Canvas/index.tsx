@@ -183,6 +183,49 @@ const Canvas: React.FC = () => {
             </TileSubtitle>
           </Subtitle>
 
+          <Subtitle>
+            <TileSubtitle
+              onClick={() => {
+                setSelected("tree");
+              }}
+            >
+              <div style={{ width: 32, height: 32 }}>
+                <Tile onClick={() => {}} onHover={() => {}} type="tree" />
+              </div>
+              <h3>Arvore 1</h3>
+            </TileSubtitle>
+            <TileSubtitle
+              onClick={() => {
+                setSelected("tree2");
+              }}
+            >
+              <div style={{ width: 32, height: 32 }}>
+                <Tile onClick={() => {}} onHover={() => {}} type="tree2" />
+              </div>
+              <h3>Arvore 2</h3>
+            </TileSubtitle>
+            <TileSubtitle
+              onClick={() => {
+                setSelected("tree3");
+              }}
+            >
+              <div style={{ width: 32, height: 32 }}>
+                <Tile onClick={() => {}} onHover={() => {}} type="tree3" />
+              </div>
+              <h3>Arvore 3</h3>
+            </TileSubtitle>
+            <TileSubtitle
+              onClick={() => {
+                setSelected("tree4");
+              }}
+            >
+              <div style={{ width: 32, height: 32 }}>
+                <Tile onClick={() => {}} onHover={() => {}} type="tree4" />
+              </div>
+              <h3>Arvore 4</h3>
+            </TileSubtitle>
+          </Subtitle>
+
           {!!generated && (
             <GeneratedContainer
               opened={opened}

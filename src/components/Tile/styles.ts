@@ -24,6 +24,12 @@ export const Container = styled.div<TileInterface>`
       `};
 
   ${(p) =>
+    p.type == "tree" &&
+    `
+      background-color: ${TileColor.type.tree}
+      `};
+
+  ${(p) =>
     tile_images.includes(String(p.type)) &&
     `
     background-image: url(${tile_images_src[String(p.type)]});

@@ -273,7 +273,6 @@ export class MapProcess {
       }
     }
 
-    this.new_tiles = tiles_matriz;
     /** Paths */
     for (let i = 0; i < this.tiles.length; i++) {
       const { x, y } = this.to_cords(i);
@@ -281,6 +280,16 @@ export class MapProcess {
         tiles_matriz[x][y] = { type: this.return_path_type(i) };
       }
     }
+
+
+    /** Re-Add decorators */
+    for(let i =0; i < this.tiles.length; i++){
+      if(this.tiles[i] == "tree" ||this.tiles[i] == "tree2" || this.tiles[i] == "tree3" || this.tiles[i] == "tree4" ) {
+        const {x,y} = this.to_cords(i);
+        tiles_matriz[x][y] = {type: this.tiles[i]}
+      }
+    }
+
 
     return tiles_matriz;
   }

@@ -43,4 +43,8 @@ type TileTypes =
   | "sbirt"
   | "sbilb"
   | "sbirb"
+  | "tree"
+  | "tree2"
+  | "tree3"
+  | "tree4"
   ;
