@@ -40,6 +40,9 @@ export const Main = styled.main`
 
 export const MapGrid = styled.div<{ width: number }>`
   display: grid;
+  position: absolute;
+  top: 0px;
+  left: 0px;
   width: 760px;
   grid-template-columns: repeat(
     ${(p) => p.width},
@@ -292,3 +295,11 @@ export const ClearBtn = styled.p`
 
   margin-bottom: 12px;
 `;
+
+export const GridsContainers = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  width: 760px;
+`

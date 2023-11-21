@@ -9,6 +9,7 @@ import {
   Container,
   Download,
   GeneratedContainer,
+  GridsContainers,
   LeftSide,
   Main,
   MapGeneratedColumn,
@@ -23,6 +24,8 @@ import { TileInterface, TileTypes } from "../Tile/types";
 import { MapProcess } from "../../handlers/mapProcessor";
 import Tile from "../Tile";
 
+type metaSelect = "core" | "spawner" | null;
+
 const Canvas: React.FC = () => {
   const SIZE = 40;
   // const SIZE = 20;
@@ -31,10 +34,16 @@ const Canvas: React.FC = () => {
     Array(SIZE * SIZE).fill("none")
   );
 
+  const [metaTiles, setMetaTiles] = useState<metaSelect[]>(
+    Array(SIZE * SIZE).fill(null)
+  );
+
   const [selected, setSelected] = useState<TileTypes>("grass");
   const [dragEnabled, setDragEnabled] = useState(false);
   const [generated, setGenerated] = useState<TileInterface[][] | null>();
   const [opened, setOpened] = useState(false);
+
+  const [metaSelect, setMetaSelect] = useState<metaSelect>(null);
 
   useEffect(() => {
     addEventListener("mousedown", () => {
@@ -83,8 +92,51 @@ const Canvas: React.FC = () => {
     setTiles(tmp);
   };
 
+  const handleChangeMetaTile = (index: number) => {
+    let tmp = [...metaTiles];
+    tmp[index] = metaSelect;
+    setMetaTiles(tmp);
+  };
+
+  const handleGetMetadataJson = () => {
+    let core: { x: number; y: number } = { x: 1, y: 2 };
+    let spawnersList: { x: number; y: number }[] = [];
+
+    metaTiles.forEach((value, index) => {
+      const x_pos = index % SIZE;
+      // @ts-ignore
+      const y_pos = parseInt(index / SIZE);
+
+      if (value == "spawner") {
+        spawnersList.push({
+          x: x_pos,
+          y: y_pos
+        });
+
+      }
+      if (value == "core") {
+        core = {
+          y: y_pos,
+          x: x_pos,
+        };
+      }
+    });
+
+    return {
+      core,
+      spawners: spawnersList,
+    };
+  };
+
   const handleDownload = () => {
-    var json_string = JSON.stringify(generated, undefined, 2);
+    var json_string = JSON.stringify(
+      {
+        map: generated,
+        metadata: handleGetMetadataJson(),
+      },
+      undefined,
+      2
+    );
     var link = document.createElement("a");
     link.download = "level.json";
     var blob = new Blob([json_string], { type: "text/plain" });
@@ -99,28 +151,61 @@ const Canvas: React.FC = () => {
       </header>
 
       <Main>
-        <MapGrid width={SIZE}>
-          {tiles.map((value, index) => (
-            <div
-              key={index}
-              onClick={() => {
-                handleChangeTile(index);
-              }}
-              onMouseEnter={() => {
-                if (!dragEnabled) return;
-                handleChangeTile(index);
-              }}
-              style={{
-                backgroundColor: TileColor.type[value],
-              }}
-            />
-          ))}
-        </MapGrid>
+        <GridsContainers>
+          <MapGrid
+            width={SIZE}
+            style={{
+              zIndex: 2,
+            }}
+          >
+            {tiles.map((value, index) => (
+              <div
+                key={index}
+                onClick={() => {
+                  handleChangeTile(index);
+                }}
+                onMouseEnter={() => {
+                  if (!dragEnabled) return;
+                  handleChangeTile(index);
+                }}
+                style={{
+                  backgroundColor: TileColor.type[value],
+                }}
+              />
+            ))}
+          </MapGrid>
+          <MapGrid
+            width={SIZE}
+            style={{
+              display: metaSelect != null ? "grid" : "none",
+              zIndex: 3,
+            }}
+          >
+            {metaTiles.map((value, index) => (
+              <div
+                key={index}
+                onClick={() => {
+                  console.log("CLICKED AT " + index);
+                  handleChangeMetaTile(index);
+                }}
+                onMouseEnter={() => {}}
+                style={
+                  value != null
+                    ? {
+                        backgroundColor: value == "core" ? "gray" : "purple",
+                      }
+                    : {}
+                }
+              />
+            ))}
+          </MapGrid>
+        </GridsContainers>
 
         <LeftSide>
           <Subtitle>
             <TileSubtitle
               onClick={() => {
+                setMetaSelect(null);
                 setSelected("none");
               }}
             >
@@ -133,6 +218,7 @@ const Canvas: React.FC = () => {
             </TileSubtitle>
             <TileSubtitle
               onClick={() => {
+                setMetaSelect(null);
                 setSelected("grass");
               }}
             >
@@ -145,6 +231,7 @@ const Canvas: React.FC = () => {
             </TileSubtitle>
             <TileSubtitle
               onClick={() => {
+                setMetaSelect(null);
                 setSelected("snow");
               }}
             >
@@ -158,6 +245,7 @@ const Canvas: React.FC = () => {
 
             <TileSubtitle
               onClick={() => {
+                setMetaSelect(null);
                 setSelected("road");
               }}
             >
@@ -171,6 +259,7 @@ const Canvas: React.FC = () => {
 
             <TileSubtitle
               onClick={() => {
+                setMetaSelect(null);
                 setSelected("dirt");
               }}
             >
@@ -186,6 +275,7 @@ const Canvas: React.FC = () => {
           <Subtitle>
             <TileSubtitle
               onClick={() => {
+                setMetaSelect(null);
                 setSelected("tree");
               }}
             >
@@ -196,6 +286,7 @@ const Canvas: React.FC = () => {
             </TileSubtitle>
             <TileSubtitle
               onClick={() => {
+                setMetaSelect(null);
                 setSelected("tree2");
               }}
             >
@@ -206,6 +297,7 @@ const Canvas: React.FC = () => {
             </TileSubtitle>
             <TileSubtitle
               onClick={() => {
+                setMetaSelect(null);
                 setSelected("tree3");
               }}
             >
@@ -216,6 +308,7 @@ const Canvas: React.FC = () => {
             </TileSubtitle>
             <TileSubtitle
               onClick={() => {
+                setMetaSelect(null);
                 setSelected("tree4");
               }}
             >
@@ -223,6 +316,43 @@ const Canvas: React.FC = () => {
                 <Tile onClick={() => {}} onHover={() => {}} type="tree4" />
               </div>
               <h3>Arvore 4</h3>
+            </TileSubtitle>
+          </Subtitle>
+
+          <Subtitle>
+            <TileSubtitle
+              onClick={() => {
+                setMetaSelect("core");
+              }}
+            >
+              <div style={{ width: 32, height: 32 }}>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "gray",
+                    borderRadius: 8,
+                  }}
+                />
+              </div>
+              <h3>Core</h3>
+            </TileSubtitle>
+            <TileSubtitle
+              onClick={() => {
+                setMetaSelect("spawner");
+              }}
+            >
+              <div style={{ width: 32, height: 32 }}>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "purple",
+                    borderRadius: 8,
+                  }}
+                />
+              </div>
+              <h3>Spawner</h3>
             </TileSubtitle>
           </Subtitle>
 
